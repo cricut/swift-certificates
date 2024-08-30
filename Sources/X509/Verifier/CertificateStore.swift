@@ -82,7 +82,11 @@ extension CertificateStore {
         init(_ store: CertificateStore, diagnosticsCallback: ((VerificationDiagnostic) -> Void)?) async {
             if store.systemTrustStore {
                 do {
+                    #if os(WASI)
+                    systemTrustRoots = [:]
+                    #else
                     systemTrustRoots = try await CertificateStore.cachedSystemTrustRootsFuture.value
+                    #endif
                 } catch {
                     diagnosticsCallback?(.loadingTrustRootsFailed(error))
                     systemTrustRoots = [:]
