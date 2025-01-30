@@ -23,6 +23,7 @@ private let rootCAFileSearchPaths = [
     "/etc/pki/tls/certs/ca-bundle.crt",  // Fedora
 ]
 
+#if !os(WASI)
 extension CertificateStore {
     /// A ``CertificateStore`` that includes all root Certificate Authorities (CAs) that
     /// are installed in the systems trust store.
@@ -48,7 +49,9 @@ extension CertificateStore {
             try Self.loadTrustRoots(at: rootCAFileSearchPaths)
         }
 }
+#endif
 
+#if !os(WASI)
 extension CertificateStore {
     @_spi(Testing)
     public static func loadTrustRoots(at searchPaths: [String]) throws -> [DistinguishedName: [Certificate]] {
@@ -86,7 +89,9 @@ extension CertificateStore {
         )
     }
 }
+#endif
 
+#if !os(WASI)
 extension DispatchQueue {
     func asyncFuture<Success: Sendable>(
         withResultOf work: @Sendable @escaping () throws -> Success
@@ -98,3 +103,4 @@ extension DispatchQueue {
         return Future(promise)
     }
 }
+#endif
