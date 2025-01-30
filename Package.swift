@@ -81,8 +81,8 @@ let package = Package(
 // we can depend on local versions of our dependencies instead of fetching them remotely.
 if ProcessInfo.processInfo.environment["SWIFTCI_USE_LOCAL_DEPS"] == nil {
     package.dependencies += [
-        .package(url: "https://github.com/apple/swift-crypto.git", "2.5.0"..<"4.0.0"),
-        .package(url: "https://github.com/apple/swift-asn1.git", from: "1.1.0"),
+        .package(url: "https://github.com/apple/swift-crypto.git", exact: "3.10.0"),
+        .package(url: "https://github.com/apple/swift-asn1.git", from: "1.2.0"),
     ]
 } else {
     package.dependencies += [
